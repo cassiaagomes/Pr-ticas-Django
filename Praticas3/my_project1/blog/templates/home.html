@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Olá, {{ nome }}!</h2>
+<p>O dobro de {{ numero }} é {{ numero|add:numero }}</p>
+<p>Data atual: {{ now }}</p>
+
+{% if is_logged_in %}
+    <p>Bem-vindo de volta!</p>
+{% else %}
+    <p>Faça login para continuar.</p>
+{% endif %}
+
+{% if idade >= 18 %}
+    <p>Maior de idade</p>
+{% else %}
+    <p>Menor de idade</p>
+{% endif %}
+
+{% if role == 'admin' %}
+    <p>Perfil: Administrador</p>
+{% elif role == 'user' %}
+    <p>Perfil: Usuário comum</p>
+{% endif %}
+
+<h3>Produtos</h3>
+<table border="1">
+<tr><th>#</th><th>Nome</th><th>Preço</th></tr>
+{% for p in produtos %}
+<tr>
+    <td>{{ forloop.counter }}</td>
+    <td>{{ p.nome }}</td>
+    <td>R$ {{ p.preco }}</td>
+</tr>
+{% endfor %}
+</table>
+{% endblock %}
