@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>{{ nome }}</h1>
+
+    <p>Número vezes 2: {{ numero|add:numero }}</p>
+
+    <p>Data atual: {{ now|date:"d/m/Y" }}</p>
+
+    {% if is_logged_in %}
+        <p>Bem-vindo de volta!</p>
+    {% else %}
+        <p>Faça login para continuar.</p>
+    {% endif %}
+
+    {% if idade >= 18 %}
+        <p>Maior de idade</p>
+    {% else %}
+        <p>Menor de idade</p>
+    {% endif %}
+
+    {% if role == 'admin' %}
+        <p>Perfil: Administrador</p>
+    {% elif role == 'user' %}
+        <p>Perfil: Usuário</p>
+    {% endif %}
+
+    <h3>Produtos</h3>
+    <table border="1">
+        <tr>
+            <th>#</th>
+            <th>Nome</th>
+            <th>Preço</th>
+        </tr>
+        {% for produto in produtos %}
+        <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ produto.nome }}</td>
+            <td>R$ {{ produto.preco }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

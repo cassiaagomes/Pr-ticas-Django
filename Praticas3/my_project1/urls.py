@@ -1,8 +1,9 @@
-from django.urls import path
-from . import views
+from django.contrib import admin
+from django.urls import path, include
 
 urlpatterns = [
-    path('', views.home, name='home'),
-    path('about/', views.about, name='about'),
-    path('contato/<int:telefone>/', views.contato, name='contato'),
+    path('admin/', admin.site.urls),
+    path('', include('my_project1.urls')),
 ]
+
+
