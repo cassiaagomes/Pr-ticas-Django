@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>Lista de Livros</h1>
+
+{% if user.is_authenticated %}
+    <a href="{% url 'criar_livro' %}">Novo Livro</a>
+{% endif %}
+
+<table border="1">
+    <tr>
+        <th>Título</th>
+        <th>Autor</th>
+        <th>Editora</th>
+        <th>Ações</th>
+    </tr>
+
+    {% for livro in page_obj %}
+    <tr>
+        <td>{{ livro.titulo }}</td>
+        <td>{{ livro.autor.nome }}</td>
+        <td>{{ livro.editora.nome }}</td>
+
+        <td>
+            {% if user.is_authenticated %}
+                <a href="{% url 'editar_livro' livro.id %}">Editar</a>
+            {% endif %}
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+
+<br>
+
+<!-- Paginação -->
+<div>
+    {% if page_obj.has_previous %}
+        <a href="?page=1">Primeira</a>
+        <a href="?page={{ page_obj.previous_page_number }}">Anterior</a>
+    {% endif %}
+
+    Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}
+
+    {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}">Próxima</a>
+        <a href="?page={{ page_obj.paginator.num_pages }}">Última</a>
+    {% endif %}
+</div>
+
+{% endblock %}
+

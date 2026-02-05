@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Blog Livros</title>
+</head>
+<body>
+
+<header>
+    <h2>Blog de Livros</h2>
+
+    {% if user.is_authenticated %}
+        Olá {{ user.username }} |
+        <a href="{% url 'logout' %}">Logout</a>
+    {% else %}
+        <a href="{% url 'login' %}">Login</a> |
+        <a href="{% url 'signup' %}">Cadastrar</a>
+    {% endif %}
+
+    <hr>
+</header>
+
+{% block content %}
+{% endblock %}
+
+</body>
+</html>
