@@ -4,7 +4,7 @@
 
 <h1>Lista de Livros</h1>
 
-{% if is_analista %}
+{% if user.is_authenticated %}
     <a href="{% url 'criar_livro' %}">Novo Livro</a>
 {% endif %}
 
@@ -21,15 +21,10 @@
         <td>{{ livro.titulo }}</td>
         <td>{{ livro.autor.nome }}</td>
         <td>{{ livro.editora.nome }}</td>
+
         <td>
-            {% if is_analista %}
-                <a href="{% url 'editar_livro' livro.id %}">Editar</a> |
-                <a href="{% url 'remover_livro' livro.id %}"
-                   onclick="return confirm('Tem certeza que deseja remover este livro?');">
-                    Remover
-                </a>
-            {% else %}
-                -
+            {% if user.is_authenticated %}
+                <a href="{% url 'editar_livro' livro.id %}">Editar</a>
             {% endif %}
         </td>
     </tr>
@@ -38,6 +33,7 @@
 
 <br>
 
+<!-- Paginação -->
 <div>
     {% if page_obj.has_previous %}
         <a href="?page=1">Primeira</a>

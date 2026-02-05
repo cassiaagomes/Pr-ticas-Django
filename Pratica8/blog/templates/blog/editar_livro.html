@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Editar Livro</h2>
+
+<p>Editando: {{ livro.titulo }}</p>
+
+<a href="{% url 'lista_livros' %}">Voltar</a>
+
+{% endblock %}

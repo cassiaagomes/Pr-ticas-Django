@@ -1,15 +1,12 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.core.paginator import Paginator
 
-from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
 from django.contrib.auth.views import LoginView, LogoutView
 
 from .models import Livro
-
-def usuario_analista(user):
-    return user.groups.filter(name='analistas').exists()
 
 
 def listar_livros(request):
@@ -19,27 +16,16 @@ def listar_livros(request):
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
-    is_analista = (
-        request.user.is_authenticated and
-        request.user.groups.filter(name="analistas_cadastros").exists()
-    )
-
-    return render(request, 'blog/listar_livros.html', {
-        'page_obj': page_obj,
-        'is_analista': is_analista
-    })
-
+    return render(request, 'blog/listar_livros.html', {'page_obj': page_obj})
 
 
 def signup(request):
     if request.method == "POST":
         form = UserCreationForm(request.POST)
-
         if form.is_valid():
             user = form.save()
             login(request, user)
-            return redirect("lista_livros")
-
+            return redirect("lista_livros")  # nome da rota
     else:
         form = UserCreationForm()
 
@@ -53,23 +39,13 @@ class CustomLoginView(LoginView):
 class CustomLogoutView(LogoutView):
     pass
 
+
 @login_required
-@user_passes_test(usuario_analista)
 def criar_livro(request):
     return render(request, "blog/criar_livro.html")
 
+
 @login_required
-@user_passes_test(usuario_analista)
 def editar_livro(request, id):
     livro = get_object_or_404(Livro, id=id)
-
-    return render(request, "blog/editar_livro.html", {
-        "livro": livro
-    })
-@login_required
-@user_passes_test(usuario_analista)
-def remover_livro(request, id):
-    livro = get_object_or_404(Livro, id=id)
-    livro.delete()
-    return redirect('lista_livros')
-
+    return render(request, "blog/editar_livro.html", {"livro": livro})
